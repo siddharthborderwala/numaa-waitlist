@@ -66,12 +66,16 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    waitUntil(
-      db.insert(apiUsageTable).values({
-        ipHash,
-        endpoint: "/api/register",
-      }),
-    );
+    const logPromise = db.insert(apiUsageTable).values({
+      ipHash,
+      endpoint: "/api/register",
+    });
+
+    if (process.env.NODE_ENV === "production") {
+      waitUntil(logPromise);
+    } else {
+      await logPromise;
+    }
 
     const [waitlistMember] = await db
       .insert(waitlistMembersTable)
