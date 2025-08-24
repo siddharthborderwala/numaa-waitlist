@@ -15,6 +15,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { captureException } from "@sentry/nextjs";
+import { Spinner } from "./spinner";
+import { cn } from "@/lib/utils";
 
 const schema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -23,7 +26,7 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export function WaitlistForm() {
+export function WaitlistForm({ className }: { className?: string }) {
   const [response, setResponse] = React.useState<{
     message: string;
     success: boolean;
@@ -63,6 +66,7 @@ export function WaitlistForm() {
       });
       form.reset();
     } catch (error) {
+      captureException(error);
       setResponse({
         message: "Something went wrong. Please try again.",
         success: false,
@@ -77,16 +81,20 @@ export function WaitlistForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full max-w-sm grid gap-4"
+        className={cn("w-full grid gap-4", className)}
       >
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel className="text-foreground">Name</FormLabel>
               <FormControl>
-                <Input placeholder="Your full name" {...field} />
+                <Input
+                  placeholder="first and last name"
+                  className="bg-white"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -98,9 +106,14 @@ export function WaitlistForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className="text-foreground">Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="you@example.com" {...field} />
+                <Input
+                  type="email"
+                  placeholder="your email address"
+                  className="bg-white"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -114,13 +127,16 @@ export function WaitlistForm() {
         ) : null}
 
         {response?.success === true ? (
-          <p className="text-green-600 dark:text-green-400 text-sm">
-            {response.message}
-          </p>
+          <p className="text-success text-sm">{response.message}</p>
         ) : null}
 
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Join waitlist"}
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          variant="default"
+          className="font-display w-full"
+        >
+          {isSubmitting ? <Spinner /> : "Sign Up"}
         </Button>
       </form>
     </Form>
