@@ -86,7 +86,7 @@ export function WaitlistForm() {
       <p className="text-muted-foreground text-center mt-1">
         You will hear from us super soon.
       </p>
-      <Image src={heart} alt="Heart" width={80} className="mx-auto my-12" />
+      <Image src={heart} alt="Heart" width={120} className="mx-auto my-6.5" />
       <Button variant="default" className="font-display w-full" asChild>
         <a
           href="https://www.instagram.com/numaadesign"
