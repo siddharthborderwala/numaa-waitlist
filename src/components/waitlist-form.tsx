@@ -4,6 +4,8 @@ import * as React from "react";
 import { z } from "zod/v4";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { captureException } from "@sentry/nextjs";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,8 +17,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { captureException } from "@sentry/nextjs";
 import { Spinner } from "./spinner";
+import heart from "@/app/assets/heart.svg";
 
 const schema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -78,14 +80,13 @@ export function WaitlistForm() {
 
   return response?.success === true ? (
     <div>
-      <div className="py-[86px]">
-        <h1 className="text-primary text-3xl font-display text-center">
-          Thank you!
-        </h1>
-        <p className="text-muted-foreground text-center mt-1">
-          You will hear from us super soon.
-        </p>
-      </div>
+      <h1 className="text-primary text-3xl font-display text-center">
+        Thank you!
+      </h1>
+      <p className="text-muted-foreground text-center mt-1">
+        You will hear from us super soon.
+      </p>
+      <Image src={heart} alt="Heart" width={80} className="mx-auto my-12" />
       <Button variant="default" className="font-display w-full" asChild>
         <a
           href="https://www.instagram.com/numaadesign"
