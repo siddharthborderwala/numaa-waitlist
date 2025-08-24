@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/db";
-import { apiUsageTable, waitlistMembersTable } from "@/db/schema";
 import { z, prettifyError } from "zod/v4";
 import crypto from "crypto";
 import { and, count, eq, lt } from "drizzle-orm";
+import { waitUntil, ipAddress } from "@vercel/functions";
+import { db } from "@/db";
+import { apiUsageTable, waitlistMembersTable } from "@/db/schema";
 
 const validator = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -26,7 +27,7 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  const clientIp = request.headers.get("x-forwarded-for");
+  const clientIp = ipAddress(request);
 
   if (!clientIp) {
     return NextResponse.json(
@@ -61,10 +62,12 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  await db.insert(apiUsageTable).values({
-    ipHash,
-    endpoint: "/api/register",
-  });
+  waitUntil(
+    db.insert(apiUsageTable).values({
+      ipHash,
+      endpoint: "/api/register",
+    }),
+  );
 
   const [waitlistMember] = await db
     .insert(waitlistMembersTable)
