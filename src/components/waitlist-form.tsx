@@ -123,7 +123,7 @@ export function WaitlistForm() {
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Emma Chamberlaine"
+                  placeholder="Your name"
                   className="bg-white"
                   {...field}
                 />
@@ -144,7 +144,7 @@ export function WaitlistForm() {
               <FormControl>
                 <Input
                   type="email"
-                  placeholder="emma@chamberlaine.com"
+                  placeholder="Your email"
                   className="bg-white"
                   {...field}
                 />
