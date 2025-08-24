@@ -104,10 +104,8 @@ export function WaitlistForm() {
       </h1>
       <p className="text-muted-foreground text-center mt-1">
         Get an exclusive{" "}
-        <u className="decoration-wavy font-display underline-offset-4 text-secondary">
-          20% off
-        </u>{" "}
-        when we launch!
+        <span className="font-display text-secondary">20% off</span> when we
+        launch!
       </p>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -164,7 +162,7 @@ export function WaitlistForm() {
           type="submit"
           disabled={isSubmitting}
           variant="default"
-          className="font-display w-full"
+          className="font-display w-full text-white"
         >
           {isSubmitting ? <Spinner /> : "Sign Up"}
         </Button>
