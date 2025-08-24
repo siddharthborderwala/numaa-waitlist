@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${instrumentSans.variable} ${souvenirStdDemi.variable} antialiased bg-[#113055] font-sans`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
