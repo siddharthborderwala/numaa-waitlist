@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/form";
 import { captureException } from "@sentry/nextjs";
 import { Spinner } from "./spinner";
-import { cn } from "@/lib/utils";
 
 const schema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -26,7 +25,7 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export function WaitlistForm({ className }: { className?: string }) {
+export function WaitlistForm() {
   const [response, setResponse] = React.useState<{
     message: string;
     success: boolean;
@@ -77,21 +76,53 @@ export function WaitlistForm({ className }: { className?: string }) {
 
   const isSubmitting = form.formState.isSubmitting;
 
-  return (
+  return response?.success === true ? (
+    <div>
+      <div className="py-[86px]">
+        <h1 className="text-primary text-3xl font-display text-center">
+          Thank you!
+        </h1>
+        <p className="text-muted-foreground text-center mt-1">
+          You will hear from us super soon.
+        </p>
+      </div>
+      <Button variant="default" className="font-display w-full" asChild>
+        <a
+          href="https://www.instagram.com/numaadesign"
+          target="_blank"
+          rel="noopener"
+        >
+          Follow us on Instagram
+        </a>
+      </Button>
+    </div>
+  ) : (
     <Form {...form}>
+      <h1 className="text-primary text-3xl font-display text-center">
+        Join the waitlist
+      </h1>
+      <p className="text-muted-foreground text-center mt-1">
+        Get an exclusive{" "}
+        <u className="decoration-wavy font-display underline-offset-4 text-secondary">
+          20% off
+        </u>{" "}
+        when we launch!
+      </p>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={cn("w-full grid gap-4", className)}
+        className="w-full grid gap-4 mt-6"
       >
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-foreground">Name</FormLabel>
+              <FormLabel className="text-foreground data-[error=true]:text-foreground">
+                Name
+              </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="first and last name"
+                  placeholder="Emma Chamberlaine"
                   className="bg-white"
                   {...field}
                 />
@@ -106,11 +137,13 @@ export function WaitlistForm({ className }: { className?: string }) {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-foreground">Email</FormLabel>
+              <FormLabel className="text-foreground data-[error=true]:text-foreground">
+                Email
+              </FormLabel>
               <FormControl>
                 <Input
                   type="email"
-                  placeholder="your email address"
+                  placeholder="emma@chamberlaine.com"
                   className="bg-white"
                   {...field}
                 />
@@ -124,10 +157,6 @@ export function WaitlistForm({ className }: { className?: string }) {
           <p className="text-destructive text-sm" role="alert">
             {response.message}
           </p>
-        ) : null}
-
-        {response?.success === true ? (
-          <p className="text-success text-sm">{response.message}</p>
         ) : null}
 
         <Button

@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${instrumentSans.variable} ${souvenirStdDemi.variable} antialiased bg-[#113055]`}
+        className={`${instrumentSans.variable} ${souvenirStdDemi.variable} antialiased bg-[#113055] font-sans`}
       >
         {children}
       </body>
