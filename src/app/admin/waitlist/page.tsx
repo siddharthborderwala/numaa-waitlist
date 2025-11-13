@@ -2,6 +2,8 @@ import { db } from "@/db";
 import { waitlistMembersTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
 
+export const dynamic = "force-dynamic";
+
 async function getWaitlistMembers() {
   const members = await db
     .select()
