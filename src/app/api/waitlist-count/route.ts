@@ -4,8 +4,14 @@ import { db } from "@/db";
 import { waitlistMembersTable } from "@/db/schema";
 import { captureException } from "@sentry/nextjs";
 
-export const GET = async () => {
+export const GET = async (request: Request) => {
   try {
+    const authHeader = request.headers.get("authorization");
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return new Response("Unauthorized", {
+        status: 401,
+      });
+    }
     const [row] = await db
       .select({ count: count() })
       .from(waitlistMembersTable);
