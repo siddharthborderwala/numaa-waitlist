@@ -106,6 +106,7 @@ export const POST = async (request: NextRequest) => {
     );
   } catch (error) {
     captureException(error);
+    console.log(error);
     return NextResponse.json(
       { success: false, message: "Something went wrong. Please try again." },
       { status: 500 },

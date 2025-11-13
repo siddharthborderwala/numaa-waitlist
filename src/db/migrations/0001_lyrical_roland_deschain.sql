@@ -1,0 +1,1 @@
+ALTER TABLE "api_usage" DROP CONSTRAINT "api_usage_ip_hash_unique";

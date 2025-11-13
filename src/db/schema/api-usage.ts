@@ -4,7 +4,7 @@ export const apiUsageTable = pgTable(
   "api_usage",
   {
     id: serial("id").primaryKey(),
-    ipHash: text("ip_hash").notNull().unique(),
+    ipHash: text("ip_hash").notNull(),
     endpoint: text("endpoint").notNull(),
     timestamp: timestamp("timestamp").notNull().defaultNow(),
   },
